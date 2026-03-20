@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #1e293b;">
+    <div class="container" style="max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);" id="login-box">
+        <h2 class="header" style="color: #3b82f6;">🔒 Admin Login</h2>
+        <p style="text-align: center; color: #64748b; margin-top: -15px; margin-bottom: 20px;">ระบบจัดการผู้ใช้งาน</p>
+        
+        <div class="form-input">
+            <div class="header-form">Admin Username</div>
+            <input class="form" id="admin-username" type="text" placeholder="">
+        </div>
+        <div class="form-input">
+            <div class="header-form">Password</div>
+            <input class="form" id="admin-password" type="password" placeholder="">
+        </div>
+        
+        <div id="admin-message" class="message"></div>
+        <button onclick="loginAdmin()" class="button" style="background: #3b82f6;">เข้าสู่ระบบจัดการ</button>
+        
+        <div style="margin-top: 20px; text-align: center;">
+            <a href="../login.html" style="color: #64748b; font-size: 14px; text-decoration: none;">⬅️ กลับหน้าผู้ใช้งานปกติ</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    
+    <script src="admin.js"></script>
+    
+</body>
+</html>

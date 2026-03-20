@@ -1,145 +1,87 @@
-const BASE_URL = 'http://localhost:8000'
-
-let mode = 'CREATE'
-let selectedId = '' //ตัวแปรแบบ Golbal ใช้ได้ทุกที่
+const BASE_URL = 'http://localhost:8000';
 
 window.onload = async () => {
-  const urlParams = new URLSearchParams(window.location.search)
-  const id = urlParams.get('id')
-  console.log('id', id)
-  if (id) {
-    mode = 'EDIT'
-    selectedId = id
-
-    try {
-      const response = await axios.get(`${BASE_URL}/users/${id}`)
-      const user = response.data
-
-      let firstNameDOM = document.querySelector('input[name=firstname]')
-      let lastNameDOM = document.querySelector('input[name=lastname]')
-      let ageDOM = document.querySelector('input[name=age]')
-      let descriptionDOM = document.querySelector('textarea[name=description]')
-
-      firstNameDOM.value = user.firstname
-      lastNameDOM.value = user.lastname
-      ageDOM.value = user.age
-      descriptionDOM.value = user.description
-
-      let genderDOMs = document.querySelectorAll('input[name=gender]')
-      let interestDOMs = document.querySelectorAll('input[name=interest]')
-
-      for (let i = 0; i < genderDOMs.length; i++) {
-        if (genderDOMs[i].value == user.gender) {
-          genderDOMs[i].checked = true
-        }
-      }
-
-      for (let i = 0; i < interestDOMs.length; i++) {
-        if (user.interests.includes(interestDOMs[i].value)) {
-          interestDOMs[i].checked = true
-        }
-      }
-
-    } catch (error) {
-      console.log('error', error)
+    const userId = localStorage.getItem('user_id');
+    if (!userId) {
+        window.location.href = 'login.html';
+        return;
     }
-  }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    if (id) {
+        try {
+            const response = await axios.get(`${BASE_URL}/health-logs/${id}`);
+            const data = response.data;
+            
+            document.getElementById('log_id').value = data.id;
+            
+            const dateStr = new Date(data.record_date).toISOString().split('T')[0];
+            document.querySelector('input[name="record_date"]').value = dateStr;
+            
+            document.querySelector('input[name="weight"]').value = data.weight;
+            document.querySelector('input[name="calories"]').value = data.calories;
+            document.querySelector('select[name="exercise_type"]').value = data.exercise_type || '';
+            document.querySelector('input[name="exercise_duration"]').value = data.exercise_duration;
+            document.querySelector('textarea[name="note"]').value = data.note;
+        } catch (error) {
+            console.error("Error loading data:", error);
+        }
+    } else {
+        document.querySelector('input[name="record_date"]').value = new Date().toISOString().split('T')[0];
+    }
 }
-  const validateData = (userData) => {
-    let errors = []
-    if (!userData.firstname) {
-      errors.push('กรุณากรอกชื่อ')
-    }
-    if (!userData.lastname) {
-      errors.push('กรุณากรอกนามสกุล')
-    }
-    if (!userData.age) {
-      errors.push('กรุณากรอกอายุ')
-    }
-    if (!userData.gender) {
-      errors.push('กรุณาเลือกเพศ')
-    }
-    if (!userData.interests) {
-      errors.push('กรุณาเลือกความสนใจ')
-    }
-    if (!userData.description) {
-      errors.push('กรุณากรอกคำอธิบาย')
-    }
-    return errors
-  }
-
-  const submitData = async () => {
-    let firstNameDOM = document.querySelector('input[name=firstname]')
-    let lastNameDOM = document.querySelector('input[name=lastname]')
-    let ageDOM = document.querySelector('input[name=age]')
-    let genderDOM = document.querySelector('input[name=gender]:checked') || {}
-    let interestDOMs = document.querySelectorAll('input[name=interest]:checked') || {}
-    let descriptionDOM = document.querySelector('textarea[name=description]')
-
-    let messageDOM = document.getElementById('message')
-
+// ฟังก์ชันสำหรับบันทึกข้อมูล
+const saveData = async () => {
+    
+    const messageDOM = document.getElementById('message');
+    
     try {
-      let interest = ''
+        const logId = document.getElementById('log_id') ? document.getElementById('log_id').value : '';
+        const record_date = document.querySelector('input[name="record_date"]').value;
+        const weight = document.querySelector('input[name="weight"]').value;
+        const calories = document.querySelector('input[name="calories"]').value || 0;
+        const exercise_type = document.querySelector('select[name="exercise_type"]').value;
+        const exercise_duration = document.querySelector('input[name="exercise_duration"]').value || 0;
+        const note = document.querySelector('textarea[name="note"]') ? document.querySelector('textarea[name="note"]').value : '';
 
-      for (let i = 0; i < interestDOMs.length; i++) {
-        interest += interestDOMs[i].value
-        if (i != interestDOMs.length - 1) {
-          interest += ', '
+        if (!weight || !record_date) {
+            
+            messageDOM.className = 'message danger';
+            messageDOM.innerText = 'กรุณากรอกวันที่และน้ำหนัก';
+            return;
         }
-      }
-      console.log('test')
-      let userData = {
-        firstname: firstNameDOM.value,
-        lastname: lastNameDOM.value,
-        age: ageDOM.value,
-        gender: genderDOM.value,
-        description: descriptionDOM.value,
-        interests: interest
-      }
-      console.log('submit data', userData)
 
-      const errors = validateData(userData)
+        const logData = {
+            user_id: localStorage.getItem('user_id'),
+            record_date: record_date,
+            weight: parseFloat(weight),
+            calories: parseInt(calories),
+            exercise_type: exercise_type,
+            exercise_duration: parseInt(exercise_duration),
+            note: note
+        };
 
-      if (errors.length > 0) {
-        throw {
-          message: 'กรอกข้อมูลไม่ครบ!',
-          errors: errors
+        if (logId) {
+            await axios.put(`${BASE_URL}/health-logs/${logId}`, logData);
+        } else {
+            await axios.post(`${BASE_URL}/health-logs`, logData);
         }
-      }
 
-      let message = 'บันทึกข้อมูลสำเร็จ!'
+        
+        messageDOM.className = 'message success';
+        messageDOM.innerText = 'บันทึกข้อมูลสำเร็จ! กำลังกลับไปหน้า Dashboard...';
+        
 
-      if(mode == 'CREATE'){
-        const response = await axios.post(`${BASE_URL}/users`, userData)
-        console.log('response', response.data)
-      } else {
-        const response = await axios.put(`${BASE_URL}/users/${selectedId}`, userData)
-        message = 'แก้ไขข้อมูลสำเร็จ!'
-        console.log('response', response.data)
-      }
-      messageDOM.innerText = message
-      messageDOM.className = 'message success'
+        setTimeout(() => {
+            window.location.href = 'user.html'; 
+        }, 1500);
 
     } catch (error) {
-      console.log('error message', error.message)
-      console.log('error', error.erros)
-      if (error.response) {
-        console.log(error.response)
-        error.message = error.response.data.message
-        error.errors = error.response.data.errors
-      }
-
-      let htmlData = '<div>'
-      htmlData += `<div>${error.message}</div>`
-      htmlData += '<ul>'
-      for (let i = 0; i < error.errors.length; i++) {
-        htmlData += `<li>${error.errors[i]}</li>`
-      }
-      htmlData += '</ul>'
-      htmlData += '<div>'
-
-
-      messageDOM.innerHTML = htmlData
-      messageDOM.className = 'message danger'
+        console.error(error);
+        
+        messageDOM.className = 'message danger';
+        messageDOM.innerText = 'เกิดข้อผิดพลาดในการบันทึกข้อมูล';
     }
-  }
+}

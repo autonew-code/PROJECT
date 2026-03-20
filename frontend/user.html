@@ -3,12 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard สุขภาพ</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <a href="index.html">Back to register</a>
-    User management
-    <div id="user"></div>
+    <div class="container" style="max-width: 800px; margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+                <h3 style="margin: 0; color: #1e293b;">สวัสดี, <span id="display-name"></span> 👋 ยินดีต้อนรับสู่ HEALTHY</h3>
+            </div>
+            <div>
+                <a href="index.html" class="button" style="padding: 10px 15px; width: auto; font-size: 14px; text-decoration: none;">+ เพิ่มบันทึก</a>
+                <button onclick="logout()" class="button" style="background: #ef4444; padding: 10px 15px; width: auto; font-size: 14px; margin-left: 10px;">ออกจากระบบ</button>
+            </div>
+        </div>
+
+        <div class="log-card" style="background: #f8fafc; border-left: 4px solid #3b82f6;">
+            <div style="flex: 1;">
+                <h4 style="margin: 0 0 10px 0; color: #1e293b;">🎯 เป้าหมายน้ำหนักของคุณ</h4>
+                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <input type="number" step="0.1" id="target-weight-input" class="form" placeholder="ระบุน้ำหนักเป้าหมาย (กก.)" style="max-width: 200px;">
+                    <button onclick="saveTarget()" class="button" style="width: auto; padding: 12px 20px;">บันทึกเป้าหมาย</button>
+                </div>
+                <p id="target-display" style="margin: 10px 0 0 0; color: #64748b; font-size: 14px;">กำลังโหลดเป้าหมาย...</p>
+            </div>
+        </div>
+
+        <h2 class="header">Dashboard พัฒนาการน้ำหนัก</h2>
+        
+        <div style="background: white; padding: 10px; border-radius: 8px; margin-bottom: 20px; border: 1px solid gainsboro;">
+            <canvas id="weightChart"></canvas>
+        </div>
+
+        <h3>ประวัติการบันทึก</h3>
+        <div id="health-list"></div>
+    </div>
+
+    <div id="target-success-modal" class="modal-overlay">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 40px; margin-bottom: 10px;">🎯</div>
+            <h3 style="color: #3b82f6; margin-top: 0; font-size: 20px;">บันทึกเป้าหมายสำเร็จ!</h3>
+            <p style="color: #475569; font-size: 15px;">ระบบได้อัปเดตเป้าหมายน้ำหนักของคุณเรียบร้อยแล้ว</p>
+            <button id="close-target-success" class="button" style="background: #3b82f6; width: 100%; margin-top: 15px;">ตกลง</button>
+        </div>
+    </div>
+
+    <div id="delete-log-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color: #ef4444; margin-top: 0; font-size: 20px;">⚠️ ยืนยันการลบข้อมูล</h3>
+            <p style="color: #475569; font-size: 15px; line-height: 1.5;">คุณแน่ใจหรือไม่ที่จะลบบันทึกสุขภาพนี้? <br>ข้อมูลจะไม่สามารถกู้คืนได้</p>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
+                <button id="cancel-log-delete" class="button" style="background: #f1f5f9; color: #475569; width: auto; padding: 10px 16px;">ยกเลิก</button>
+                <button id="confirm-log-delete" class="button" style="background: #ef4444; width: auto; padding: 10px 16px;">ยืนยันการลบ</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
     <script src="user.js"></script>
 </body>

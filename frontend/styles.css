@@ -1,84 +1,197 @@
-/* สิ่งที่อยู่ตรงนี้ จะมีไว้แค่ให้ dev อ่าน */
-/* 1. แต่งใคร ? (id, class, DOM) 2. แต่งอะไร ? */
-@font-face {
-  font-family: "kanit";
-  src: url("./Kanit/Kanit-Regular.ttf");
-}
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
 
 body {
-  font-family: "kanit";
+  font-family: "Kanit", sans-serif;
+  background-color: #f0f4f8;
+  color: #334155;
+  margin: 0;
+  padding: 20px;
 }
 
 .container {
   width: 100%;
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: azure;
-  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
 
 .header {
-  font-size: 30px;
+  font-size: 28px;
+  font-weight: 600;
   text-align: center;
-}
-
-.header-form {
-  width: 140px;
+  margin-bottom: 25px;
+  color: #1e293b;
 }
 
 .flex {
   display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .form-input {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.header-form {
+  width: 160px;
+  font-weight: 500;
+  color: #475569;
+}
+
+input.form,
+select.form,
+textarea {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-family: "Kanit", sans-serif;
+  font-size: 15px;
+  background-color: #ffffff;
+  color: #334155;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input.form:focus,
+select.form:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .center {
   text-align: center;
-}
-
-input.form,
-textarea {
-  border: 1px gainsboro solid;
-  width: 100%;
+  margin-top: 20px;
 }
 
 .button {
-  border: 0;
-  width: 50%;
-  height: 40px;
-  background-color: #2962ff;
+  border: none;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #0ac843 0%, #151516 100%);
   color: white;
+  font-size: 16px;
+  font-family: "Kanit", sans-serif;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
 }
 
 .message {
-  background-color: lightgray;
-  padding: 10px;
-  margin-button: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
   display: none;
+  font-weight: 500;
+  text-align: center;
 }
 
 .message.success {
-  background-color: lightgreen;
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
   display: block;
 }
 
 .message.danger {
-  background-color: lightcoral;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
   display: block;
 }
+
+.log-card {
+  border: 1px solid #e2e8f0;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+
+.log-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-color: #cbd5e1;
+}
+
+.log-info strong {
+  color: #3b82f6;
+}
+
+.log-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-family: "Kanit", sans-serif;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.log-actions button:hover {
+  opacity: 0.8;
+}
+
+.btn-edit { background-color: #f59e0b; color: white; }
+.btn-delete { background-color: #ef4444; color: white; margin-left: 5px; }
 
 @media screen and (max-width: 768px) {
   .flex {
     flex-direction: column;
+    align-items: flex-start;
   }
-  .header{
-    font-size: 24px;
+  .header-form {
+    margin-bottom: 8px;
   }
-  .button {
+  .log-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .log-actions {
+    margin-top: 12px;
     width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }

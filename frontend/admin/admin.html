@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการผู้ใช้งาน (Admin)</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <div class="container" style="max-width: 800px; margin-top: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+                <h3 style="margin: 0; color: #1e293b;">⚙️ ระบบจัดการ Admin</h3>
+            </div>
+            <div>
+                <button onclick="logoutAdmin()" class="button" style="background: #ef4444; padding: 10px 15px; width: auto; font-size: 14px;">ออกจากระบบ Admin</button>
+            </div>
+        </div>
+
+        <h2 class="header">รายชื่อผู้ใช้งานทั้งหมดในระบบ</h2>
+        <div id="users-list"></div>
+    </div>
+
+    <div id="delete-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color: #ef4444; margin-top: 0; font-size: 20px;">⚠️ ยืนยันการลบผู้ใช้</h3>
+            <p style="color: #475569; font-size: 15px; line-height: 1.5;">คุณแน่ใจหรือไม่ที่จะลบผู้ใช้นี้? <br>ข้อมูลสุขภาพทั้งหมดของเขาจะถูกลบไปด้วย และไม่สามารถกู้คืนได้</p>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;">
+                <button id="cancel-delete" class="button" style="background: #f1f5f9; color: #475569; width: auto; padding: 10px 16px;">ยกเลิก</button>
+                <button id="confirm-delete" class="button" style="background: #ef4444; width: auto; padding: 10px 16px;">ยืนยันการลบ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="success-modal" class="modal-overlay">
+        <div class="modal-content" style="text-align: center;">
+            <div style="font-size: 40px; margin-bottom: 10px;">✅</div>
+            <h3 style="color: #10b981; margin-top: 0; font-size: 20px;">ลบข้อมูลสำเร็จ</h3>
+            <p style="color: #475569; font-size: 15px;">ลบบัญชีผู้ใช้งานออกจากระบบเรียบร้อยแล้ว</p>
+            <button id="close-success" class="button" style="background: #10b981; width: 100%; margin-top: 15px;">ตกลง</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
