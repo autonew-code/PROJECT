@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div class="container" style="max-width: 400px;" id="login-box">
+        <h2 class="header">Log-in to HEALTHY</h2>
+        <div class="form-input">
+            <div class="header-form">Username</div>
+            <input class="form" id="login-username" type="text">
+        </div>
+        <div class="form-input">
+            <div class="header-form">Password</div>
+            <input class="form" id="login-password" type="password">
+        </div>
+        <div id="login-message" class="message"></div>
+        <button onclick="login()" class="button">เข้าสู่ระบบ</button>
+        <p class="center" style="margin-top: 15px;">ยังไม่มีบัญชี? <a href="#" onclick="toggleForm()">สมัครสมาชิก</a></p>
+
+        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0; text-align: center;">
+            <a href="admin/admin-login.html" style="color: #64748b; font-size: 14px; text-decoration: none;">⚙️ สำหรับผู้ดูแลระบบ (Admin)</a>
+        </div>
+    </div>
+
+    <div class="container" style="max-width: 400px; display: none;" id="register-box">
+        <h2 class="header">สมัครสมาชิก</h2>
+        <div class="form-input">
+            <div class="header-form">ชื่อ-นามสกุล</div>
+            <input class="form" id="reg-name" type="text">
+        </div>
+        <div class="form-input">
+            <div class="header-form">Username</div>
+            <input class="form" id="reg-username" type="text">
+        </div>
+        <div class="form-input">
+            <div class="header-form">Password</div>
+            <input class="form" id="reg-password" type="password">
+        </div>
+        <div id="reg-message" class="message"></div>
+        <button onclick="register()" class="button">สมัครสมาชิก</button>
+        <p class="center" style="margin-top: 15px;">มีบัญชีอยู่แล้ว? <a href="#" onclick="toggleForm()">เข้าสู่ระบบ</a></p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>
